@@ -16,24 +16,13 @@
             <div class="form-group">
                 <label asp-for="ParentDepartmentID" class="control-label"></label>
 
-                @*<select asp-for="ParentDepartmentID" name="SelectDepartment" id="SelectDepartment">
+
+
+                <select asp-for="ParentDepartmentID" asp-items="ViewBag.Department">                    
                     <option value=""></option>
-                    @foreach (var item in ViewBag.Departments)
-                    {
-                        <option value="@item.Id">@item.Id</option>
-                    }
-
-                </select>*@
-
-                <select asp-for="ParentDepartmentID" asp-items="ViewBag.Department">
-                <option selected="selected" disabled="disabled"></option>
                 </select>
 
-                @*<select asp-for="ParentDepartmentID" asp-items="ViewBag.Departments"></select>*@
 
-
-                @*<input asp-for="ParentDepartmentID" class="form-control" value="" />
-                <span asp-validation-for="ParentDepartmentID" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>

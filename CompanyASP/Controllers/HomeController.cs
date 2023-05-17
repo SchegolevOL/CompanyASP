@@ -47,6 +47,7 @@ namespace CompanyASP.Controllers
         [HttpGet]
         public async Task<IActionResult> EditDepartment(Guid? id)
         {
+            ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
             if (id != null)
             {
                 Department? department = await _companyDB.Department.FirstOrDefaultAsync(p => p.Id == id);
@@ -145,7 +146,7 @@ namespace CompanyASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmployee(Employee employee)
         {
-
+            //TOODOO ??????????????????????????????????????
             //await _companyDB.AddAsync(employee);
             //await _companyDB.Database.ExecuteSqlInterpolatedAsync($"SET IDENTITY_INSERT dbo.Employee ON;");
             //await _companyDB.SaveChangesAsync();
@@ -153,7 +154,7 @@ namespace CompanyASP.Controllers
 
             await _companyDB.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO dbo.Employee (FirstName, SurName, Patronymic, DateOfBirth, DocSeries, DocNumber, Position, DepartmentID) VALUES ({employee.FirstName}, {employee.SurName}, {employee.Patronymic}, {employee.DataOfBirth}, {employee.DocSeries}, {employee.DocNumber}, {employee.Position}, {employee.DepartmentID});");
 
-            return RedirectToAction("ListDepartment", "Home");
+            return RedirectToAction("ListEmployee", "Home");
         }
 
         [HttpGet]
