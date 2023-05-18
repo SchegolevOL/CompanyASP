@@ -65,7 +65,7 @@
                     @Html.DisplayFor(modelItem => item.Patronymic)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DataOfBirth)
+                    @item.DataOfBirth.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocSeries)
