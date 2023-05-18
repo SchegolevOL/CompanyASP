@@ -80,15 +80,14 @@
                 @if (DateTime.Now.Year - item.DataOfBirth.Year < 0)
                 {
                     <td>None</td>
-
                 }
                 else if (DateTime.Now.Month > item.DataOfBirth.Month)
                 {
-                    <td>@((DateTime.Now.Year - item.DataOfBirth.Year) - 1)</td>
+                    <td>@(DateTime.Now.Year - item.DataOfBirth.Year)</td>
                 }
                 else 
                 {
-                    <td>@(DateTime.Now.Year - item.DataOfBirth.Year)</td>
+                    <td>@(DateTime.Now.Year - item.DataOfBirth.Year+1)</td>
                 }
 
 
