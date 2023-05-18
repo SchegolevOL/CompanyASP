@@ -10,8 +10,7 @@ namespace CompanyASP.Models
         [Column("ID")][Key]
         public decimal Id { get; set; }
         [Column("DepartmentID")]
-        public Guid DepartmentId { get; set; }
-        
+        public Guid DepartmentId { get; set; }        
         [Column("SurName")]
         public string SurName { get; set; }
         [Column("FirstName")]

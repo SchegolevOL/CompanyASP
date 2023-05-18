@@ -28,6 +28,7 @@ namespace CompanyASP.Controllers
                              Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
                              (e, s) => new DepartmentView
                              {
+                                 Id = e.Id,
                                  DepartmentId = e.DepartmentId,
                                  ParentDepartment = s.Name,
                                  Name = e.Name,
@@ -112,6 +113,7 @@ namespace CompanyASP.Controllers
                              Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
                              (e, s) => new EmployeeView
                              {
+                                 Id = e.Id,
                                  DataOfBirth = e.DataOfBirth,
                                  DepartmentId = e.DepartmentId,
                                  FirstName = e.FirstName,

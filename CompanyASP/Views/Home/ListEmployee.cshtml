@@ -7,7 +7,7 @@
 <h1>ListEmployee</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddEmployee">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -93,8 +93,7 @@
 
 
                 <td>
-                    <a asp-action="EditEmployee" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="EditEmployee" asp-route-id="@item.Id">Edit</a> |                   
                     <a asp-action="DeleteEmployee" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>

@@ -10,13 +10,12 @@ namespace CompanyASP.Models
         [Column("Id")]
         public Guid Id { get; set; }
         [Column("ParentDepartmentID")]
-        public Guid? DepartmentId { get; set; }
-        
+        public Guid? DepartmentId { get; set; }        
         [Column("Name")]
         public string Name { get; set; }
         [Column("Code")]
         public string? Code { get; set; }
-        public List<Employee>Employees { get; set; }
+        
        
     }
 }
