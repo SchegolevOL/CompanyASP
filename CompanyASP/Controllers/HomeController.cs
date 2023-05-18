@@ -24,7 +24,23 @@ namespace CompanyASP.Controllers
 
         public IActionResult ListDepartment()
         {
-            var departments = this._companyDB.Department.ToList();
+            var departments = this._companyDB.Department.
+                             Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
+                             (e, s) => new DepartmentView
+                             {
+                                 DepartmentId = e.DepartmentId,
+                                 ParentDepartment = s.Name,
+                                 Name = e.Name,
+                                 Code = e.Code,
+
+                             }).ToList();
+
+
+
+
+
+
+            //var departments = this._companyDB.Department.ToList();
             return View(departments);
         }
         [HttpGet]
@@ -90,8 +106,22 @@ namespace CompanyASP.Controllers
         public IActionResult ListEmployee()
         {
             
-            var employees = this._companyDB.Employee.ToList();
-           
+            //var employees = this._companyDB.Employee.Include(x=>x.Department).ThenInclude(x=>x.Name).ToList();
+            //var employees = this._companyDB.Employee.ToList();
+            var employees = this._companyDB.Employee.
+                             Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
+                             (e, s) => new EmployeeView
+                             {
+                                 DataOfBirth = e.DataOfBirth,
+                                 DepartmentId = e.DepartmentId,
+                                 FirstName = e.FirstName,
+                                 SurName = e.SurName,
+                                 Department = s.Name,
+                                 Patronymic = e.Patronymic,
+                                 DocSeries = e.DocSeries,
+                                 DocNumber = e.DocNumber,
+                                 Position = e.Position
+                             }).ToList();
             return View(employees);
 
         }
@@ -107,14 +137,14 @@ namespace CompanyASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmployee(Employee employee)
         {
-            
+
             //TODO ??????????????????????????????????????
             //await _companyDB.Database.ExecuteSqlInterpolatedAsync($"SET IDENTITY_INSERT dbo.Employee ON;");
-            //await _companyDB.Employee.AddAsync(employee);           
+            //await _companyDB.Employee.AddAsync(employee);
             //await _companyDB.SaveChangesAsync();
             //await _companyDB.Database.ExecuteSqlInterpolatedAsync($"SET IDENTITY_INSERT dbo.Employee OFF;");
 
-            await _companyDB.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO dbo.Employee (FirstName, SurName, Patronymic, DateOfBirth, DocSeries, DocNumber, Position, DepartmentID) VALUES ({employee.FirstName}, {employee.SurName}, {employee.Patronymic}, {employee.DataOfBirth}, {employee.DocSeries}, {employee.DocNumber}, {employee.Position}, {employee.DepartmentID});");
+            await _companyDB.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO dbo.Employee (FirstName, SurName, Patronymic, DateOfBirth, DocSeries, DocNumber, Position, DepartmentID) VALUES ({employee.FirstName}, {employee.SurName}, {employee.Patronymic}, {employee.DataOfBirth}, {employee.DocSeries}, {employee.DocNumber}, {employee.Position}, {employee.DepartmentId});");
 
             return RedirectToAction("ListEmployee", "Home");
         }

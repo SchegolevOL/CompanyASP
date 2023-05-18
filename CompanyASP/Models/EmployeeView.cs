@@ -3,28 +3,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CompanyASP.Models
 {
-    [Table("Employee")]
-    public class Employee
+    
+    public class EmployeeView
     {
-        
-        [Column("ID")][Key]
+       
         public decimal Id { get; set; }
-        [Column("DepartmentID")]
-        public Guid DepartmentId { get; set; }
         
-        [Column("SurName")]
+        public Guid DepartmentId { get; set; }
+        public string Department { get; set; }
+        
         public string SurName { get; set; }
-        [Column("FirstName")]
+        
         public string FirstName { get; set; }
-        [Column("Patronymic")]
+        
         public string? Patronymic { get; set; }
-        [Column("DateOfBirth")]
+        
         public DateTime DataOfBirth { get; set; }
-        [Column("DocSeries")]
+        
         public string? DocSeries { get; set; }
-        [Column("DocNumber")]
+        
         public string? DocNumber { get; set; }
-        [Column("Position")]
+        
         public string Position { get; set; }     
         
     }

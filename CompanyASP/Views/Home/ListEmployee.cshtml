@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CompanyASP.Models.Employee>
+﻿@model IEnumerable<CompanyASP.Models.EmployeeView>
 
 @{
     ViewData["Title"] = "ListEmployee";
@@ -13,7 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DepartmentID)
+                @Html.DisplayNameFor(model => model.DepartmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SurName)
@@ -47,7 +50,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DepartmentID)
+                    @Html.DisplayFor(modelItem => item.DepartmentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SurName)

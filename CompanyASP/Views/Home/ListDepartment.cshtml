@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CompanyASP.Models.Department>
+﻿@model IEnumerable<CompanyASP.Models.DepartmentView>
 
 @{
     ViewData["Title"] = "ListDepartment";
@@ -13,7 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ParentDepartmentID)
+                @Html.DisplayNameFor(model => model.DepartmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentDepartment)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -28,7 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ParentDepartmentID)
+                @Html.DisplayFor(modelItem => item.DepartmentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentDepartment)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

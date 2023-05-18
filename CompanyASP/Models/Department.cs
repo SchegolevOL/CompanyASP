@@ -6,13 +6,17 @@ namespace CompanyASP.Models
 {
     public class Department
     {
-       
-       
+
+        [Column("Id")]
         public Guid Id { get; set; }
+        [Column("ParentDepartmentID")]
+        public Guid? DepartmentId { get; set; }
         
-        public Guid? ParentDepartmentID { get; set; }
-        //public Department Department_ { get; set; }
+        [Column("Name")]
         public string Name { get; set; }
+        [Column("Code")]
         public string? Code { get; set; }
+        public List<Employee>Employees { get; set; }
+       
     }
 }
