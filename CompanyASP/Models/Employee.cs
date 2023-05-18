@@ -6,7 +6,7 @@ namespace CompanyASP.Models
     public class Employee
     {
         [Column("ID")]
-        public decimal? Id { get; set; }
+        public decimal Id { get; set; }
         [Column("DepartmentID")]
         public Guid DepartmentID { get; set; }
         [Column("SurName")]

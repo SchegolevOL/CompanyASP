@@ -36,42 +36,62 @@
             <th>
                 @Html.DisplayNameFor(model => model.Position)
             </th>
+            <th>
+                Age
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartmentID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patronymic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DocSeries)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DocNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Position)
-            </td>
-            <td>
-                <a asp-action="EditEmployee" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patronymic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocSeries)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+
+                @if (DateTime.Now.Year - item.DataOfBirth.Year < 0)
+                {
+                    <td>None</td>
+
+                }
+                else if (DateTime.Now.Month < item.DataOfBirth.Month)
+                {
+                    <td>@((DateTime.Now.Year - item.DataOfBirth.Year) - 1)</td>
+                }
+                else 
+                {
+                    <td>@(DateTime.Now.Year - item.DataOfBirth.Year)</td>
+                }
+
+
+                <td>
+                    <a asp-action="EditEmployee" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="DeleteEmployee" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

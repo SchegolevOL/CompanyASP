@@ -89,50 +89,11 @@ namespace CompanyASP.Controllers
         #region Employee
         public IActionResult ListEmployee()
         {
-            var ages = new List<int>();
+            
             var employees = this._companyDB.Employee.ToList();
-            foreach (var item in employees)
-            {
-
-                if (DateTime.Now.DayOfYear < item.DataOfBirth.DayOfYear)
-                {
-                    ages.Add(DateTime.Now.Year - item.DataOfBirth.Year + 1);
-                }
-                else if ((DateTime.Now.Year - item.DataOfBirth.Year) < 0)
-                {
-                    ages.Add(0);
-                }
-
-            }
-            ViewBag.Ages = ages;
+           
             return View(employees);
 
-            /*(Employee, int) empoyeeAge;
-            var empoyees = new List<(Employee, int)>();
-            var employeesDb = this._companyDB.Employee.ToList();
-
-            foreach (var item in employeesDb)
-            {
-                
-                if (DateTime.Now.DayOfYear < item.DataOfBirth.DayOfYear)
-                {
-                    empoyeeAge = (item, (DateTime.Now.Year - item.DataOfBirth.Year + 1));
-                    empoyees.Add(empoyeeAge);
-
-                }
-                else if ((DateTime.Now.Year - item.DataOfBirth.Year) < 0)
-                {
-                    empoyeeAge = (item, 0);
-                    empoyees.Add(empoyeeAge);
-                }else
-                {
-                    empoyeeAge = (item, (DateTime.Now.Year - item.DataOfBirth.Year));
-                    empoyees.Add(empoyeeAge);
-                }
-
-            }
-            
-            return View(employees);*/
         }
 
         [HttpGet]
@@ -146,9 +107,10 @@ namespace CompanyASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmployee(Employee employee)
         {
-            //TOODOO ??????????????????????????????????????
-            //await _companyDB.AddAsync(employee);
+            
+            //TODO ??????????????????????????????????????
             //await _companyDB.Database.ExecuteSqlInterpolatedAsync($"SET IDENTITY_INSERT dbo.Employee ON;");
+            //await _companyDB.Employee.AddAsync(employee);           
             //await _companyDB.SaveChangesAsync();
             //await _companyDB.Database.ExecuteSqlInterpolatedAsync($"SET IDENTITY_INSERT dbo.Employee OFF;");
 
