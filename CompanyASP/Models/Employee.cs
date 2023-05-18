@@ -1,14 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CompanyASP.Models
 {
     [Table("Employee")]
     public class Employee
     {
-        [Column("ID")]
+        
+        [Column("ID")][Key]
         public decimal Id { get; set; }
         [Column("DepartmentID")]
         public Guid DepartmentID { get; set; }
+        public Department Department { get; set; }
         [Column("SurName")]
         public string SurName { get; set; }
         [Column("FirstName")]
@@ -23,5 +26,6 @@ namespace CompanyASP.Models
         public string? DocNumber { get; set; }
         [Column("Position")]
         public string Position { get; set; }
+        
     }
 }

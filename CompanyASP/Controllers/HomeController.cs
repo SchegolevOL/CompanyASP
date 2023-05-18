@@ -122,6 +122,7 @@ namespace CompanyASP.Controllers
         [HttpGet]
         public async Task<IActionResult> EditEmployee(decimal? id)
         {
+            ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
             if (id != null)
             {
                 Employee? employee = await _companyDB.Employee.FirstOrDefaultAsync(p => p.Id == id);
@@ -132,6 +133,7 @@ namespace CompanyASP.Controllers
         [HttpPost]
         public async Task<IActionResult> EditEmployee(Employee employee)
         {
+
             _companyDB.Employee.Update(employee);
             await _companyDB.SaveChangesAsync();
             return RedirectToAction("ListEmployee", "Home");

@@ -76,7 +76,7 @@
                     <td>None</td>
 
                 }
-                else if (DateTime.Now.Month < item.DataOfBirth.Month)
+                else if (DateTime.Now.Month > item.DataOfBirth.Month)
                 {
                     <td>@((DateTime.Now.Year - item.DataOfBirth.Year) - 1)</td>
                 }
