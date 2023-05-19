@@ -34,14 +34,7 @@ namespace CompanyASP.Controllers
                                  Name = e.Name,
                                  Code = e.Code,
 
-                             }).ToList();
-
-
-
-
-
-
-            //var departments = this._companyDB.Department.ToList();
+                             }).ToList();            
             return View(departments);
         }
         [HttpGet]
@@ -132,9 +125,7 @@ namespace CompanyASP.Controllers
         #region Employee
         public IActionResult ListEmployee()
         {
-
-            //var employees = this._companyDB.Employee.Include(x=>x.Department).ThenInclude(x=>x.Name).ToList();
-            //var employees = this._companyDB.Employee.ToList();
+                     
             var employees = this._companyDB.Employee.
                              Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
                              (e, s) => new EmployeeView
