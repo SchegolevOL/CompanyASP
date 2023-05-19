@@ -14,8 +14,6 @@ namespace CompanyASP.Controllers
         {
             this._companyDB = companyDB;
         }
-
-
         public IActionResult Index()
         {
             return View();
