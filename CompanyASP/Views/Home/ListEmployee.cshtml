@@ -76,12 +76,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Position)
                 </td>
-
-                @if (DateTime.Now.Year - item.DataOfBirth.Year < 0)
-                {
-                    <td>None</td>
-                }
-                else if (DateTime.Now.Month > item.DataOfBirth.Month)
+                
+                @if (DateTime.Now.Month > item.DataOfBirth.Month)
                 {
                     <td>@(DateTime.Now.Year - item.DataOfBirth.Year)</td>
                 }

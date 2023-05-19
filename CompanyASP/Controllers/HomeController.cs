@@ -48,7 +48,7 @@ namespace CompanyASP.Controllers
         public IActionResult AddDepartment()
         {
             ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
-            
+
             return View();
         }
 
@@ -101,12 +101,38 @@ namespace CompanyASP.Controllers
             }
             return NotFound();
         }
+
+        public IActionResult ListEmployeeOfDepartment(Guid id)
+        {
+            var employees = this._companyDB.Employee.
+                             Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
+                             (e, s) => new EmployeeView
+                             {
+                                 Id = e.Id,
+                                 DataOfBirth = e.DataOfBirth,
+                                 DepartmentId = e.DepartmentId,
+                                 FirstName = e.FirstName,
+                                 SurName = e.SurName,
+                                 Department = s.Name,
+                                 Patronymic = e.Patronymic,
+                                 DocSeries = e.DocSeries,
+                                 DocNumber = e.DocNumber,
+                                 Position = e.Position
+                             }).ToList();
+            var selected = from p in employees
+                                 where p.DepartmentId == id
+                                 select p;
+
+            return View(selected);
+
+        }
+
         #endregion
 
         #region Employee
         public IActionResult ListEmployee()
         {
-            
+
             //var employees = this._companyDB.Employee.Include(x=>x.Department).ThenInclude(x=>x.Name).ToList();
             //var employees = this._companyDB.Employee.ToList();
             var employees = this._companyDB.Employee.

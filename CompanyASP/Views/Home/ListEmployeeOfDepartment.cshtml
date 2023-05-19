@@ -1,0 +1,80 @@
+﻿@model IEnumerable<CompanyASP.Models.EmployeeView>
+
+@{
+    ViewData["Title"] = "ListEmployeeOfDepartment";
+}
+
+<h1>ListEmployeeOfDepartment</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patronymic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocSeries)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patronymic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocSeries)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            
+        </tr>
+}
+        <div>
+            <a asp-action="ListDepartment">Back to List</a>
+        </div>
+    </tbody>
+</table>
