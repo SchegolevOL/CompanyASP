@@ -32,7 +32,7 @@ namespace CompanyASP.Controllers
                                  Name = e.Name,
                                  Code = e.Code,
 
-                             }).ToList();            
+                             }).ToList();
             return View(departments);
         }
         [HttpGet]
@@ -80,17 +80,20 @@ namespace CompanyASP.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteDepartment(Guid? id)
         {
-            if (id != null)
+            if (await _companyDB.Employee.FirstOrDefaultAsync(p => p.DepartmentId == id) == null)
             {
-                Department? department = await _companyDB.Department.FirstOrDefaultAsync(p => p.Id == id);
-                if (department != null)
+                if (id != null)
                 {
-                    _companyDB.Department.Remove(department);
-                    await _companyDB.SaveChangesAsync();
-                    return RedirectToAction("ListDepartment");
+                    Department? department = await _companyDB.Department.FirstOrDefaultAsync(p => p.Id == id);
+                    if (department != null)
+                    {
+                        _companyDB.Department.Remove(department);
+                        await _companyDB.SaveChangesAsync();
+                        return RedirectToAction("ListDepartment");
+                    }
                 }
             }
-            return NotFound();
+            return RedirectToAction("ListDepartment", "Home");
         }
 
         public IActionResult ListEmployeeOfDepartment(Guid id)
@@ -111,8 +114,8 @@ namespace CompanyASP.Controllers
                                  Position = e.Position
                              }).ToList();
             var selected = from p in employees
-                                 where p.DepartmentId == id
-                                 select p;
+                           where p.DepartmentId == id
+                           select p;
 
             return View(selected);
 
@@ -123,7 +126,7 @@ namespace CompanyASP.Controllers
         #region Employee
         public IActionResult ListEmployee()
         {
-                     
+
             var employees = this._companyDB.Employee.
                              Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
                              (e, s) => new EmployeeView
