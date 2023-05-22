@@ -1,4 +1,5 @@
 ﻿using CompanyASP.Models;
+using CompanyASP.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,71 +11,112 @@ namespace CompanyASP.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly CompanyDB _companyDB;
-        public HomeController(CompanyDB companyDB)
+        private readonly IUserManager _userManager;
+        public HomeController(ILogger<HomeController> logger, CompanyDB companyDB, IUserManager userManager)
         {
-            this._companyDB = companyDB;
+            _logger = logger;
+            _companyDB = companyDB;
+            _userManager = userManager;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
         #region Department
 
         public IActionResult ListDepartment()
         {
-            var departments = this._companyDB.Department.
-                             Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
-                             (e, s) => new DepartmentView
-                             {
-                                 Id = e.Id,
-                                 DepartmentId = e.DepartmentId,
-                                 ParentDepartment = s.Name,
-                                 Name = e.Name,
-                                 Code = e.Code,
 
-                             }).ToList();
-            return View(departments);
+            if (_userManager.GetCookieAdmin())
+            {
+                var departments = this._companyDB.Department.
+                                             Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
+                                             (e, s) => new DepartmentView
+                                             {
+                                                 Id = e.Id,
+                                                 DepartmentId = e.DepartmentId,
+                                                 ParentDepartment = s.Name,
+                                                 Name = e.Name,
+                                                 Code = e.Code,
+
+                                             }).ToList();
+                return View(departments);
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
         [HttpGet]
         public IActionResult AddDepartment()
         {
-            ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
+            if (_userManager.GetCookieAdmin())
+            {
+                ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
 
-            return View();
+                return View();
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
+
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDepartment(Department department)
         {
+            if (_userManager.GetCookieAdmin())
+            {
+                await _companyDB.AddAsync(department);
+                await _companyDB.SaveChangesAsync();
+                return RedirectToAction("ListDepartment", "Home");
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
 
-            await _companyDB.AddAsync(department);
-            await _companyDB.SaveChangesAsync();
-            return RedirectToAction("ListDepartment", "Home");
+
         }
         [HttpGet]
         public async Task<IActionResult> EditDepartment(Guid? id)
         {
-            ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
-            if (id != null)
+            if (_userManager.GetCookieAdmin())
             {
-                Department? department = await _companyDB.Department.FirstOrDefaultAsync(p => p.Id == id);
-                if (department != null) return View(department);
+                ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
+                if (id != null)
+                {
+                    Department? department = await _companyDB.Department.FirstOrDefaultAsync(p => p.Id == id);
+                    if (department != null) return View(department);
+                }
             }
-            return NotFound();
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
         [HttpPost]
         public async Task<IActionResult> EditDepartment(Department department)
         {
-            _companyDB.Department.Update(department);
-            await _companyDB.SaveChangesAsync();
-            return RedirectToAction("ListDepartment", "Home");
+            if (_userManager.GetCookieAdmin())
+            {
+                _companyDB.Department.Update(department);
+                await _companyDB.SaveChangesAsync();
+                return RedirectToAction("ListDepartment", "Home");
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
         [HttpGet]
         public IActionResult DeleteDepartment(Guid id)
         {
-            var department = _companyDB.Department.Find(id);
-            return View(department);
+            if (_userManager.GetCookieAdmin())
+            {
+                var department = _companyDB.Department.Find(id);
+                return View(department);
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
 
         [HttpPost]
@@ -98,7 +140,9 @@ namespace CompanyASP.Controllers
 
         public IActionResult ListEmployeeOfDepartment(Guid id)
         {
-            var employees = this._companyDB.Employee.
+            if (_userManager.GetCookieAdmin())
+            {
+                var employees = this._companyDB.Employee.
                              Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
                              (e, s) => new EmployeeView
                              {
@@ -113,11 +157,14 @@ namespace CompanyASP.Controllers
                                  DocNumber = e.DocNumber,
                                  Position = e.Position
                              }).ToList();
-            var selected = from p in employees
-                           where p.DepartmentId == id
-                           select p;
+                var selected = from p in employees
+                               where p.DepartmentId == id
+                               select p;
 
-            return View(selected);
+                return View(selected);
+            }
+
+            return RedirectToAction("Index", "User");
 
         }
 
@@ -127,7 +174,9 @@ namespace CompanyASP.Controllers
         public IActionResult ListEmployee()
         {
 
-            var employees = this._companyDB.Employee.
+            if (_userManager.GetCookieAdmin())
+            {
+                var employees = this._companyDB.Employee.
                              Join(this._companyDB.Department, e => e.DepartmentId, s => s.Id,
                              (e, s) => new EmployeeView
                              {
@@ -142,15 +191,28 @@ namespace CompanyASP.Controllers
                                  DocNumber = e.DocNumber,
                                  Position = e.Position
                              }).ToList();
-            return View(employees);
+                return View(employees);
+            }
+
+            return RedirectToAction("Index", "User");
+
+
+
+
 
         }
 
         [HttpGet]
         public IActionResult AddEmployee()
         {
-            ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
-            return View();
+            if (_userManager.GetCookieAdmin())
+            {
+                ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
+                return View();
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
 
         [HttpPost]
@@ -172,13 +234,19 @@ namespace CompanyASP.Controllers
         [HttpGet]
         public async Task<IActionResult> EditEmployee(decimal? id)
         {
-            ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
-            if (id != null)
+            if (_userManager.GetCookieAdmin())
             {
-                Employee? employee = await _companyDB.Employee.FirstOrDefaultAsync(p => p.Id == id);
-                if (employee != null) return View(employee);
+                ViewBag.Department = new MultiSelectList(_companyDB.Department, "Id", "Name");
+                if (id != null)
+                {
+                    Employee? employee = await _companyDB.Employee.FirstOrDefaultAsync(p => p.Id == id);
+                    if (employee != null) return View(employee);
+                }
+                return NotFound();
             }
-            return NotFound();
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
         [HttpPost]
         public async Task<IActionResult> EditEmployee(Employee employee)
@@ -192,24 +260,36 @@ namespace CompanyASP.Controllers
         [HttpGet]
         public IActionResult DeleteEmployee(decimal id)
         {
-            var employee = _companyDB.Employee.Find(id);
-            return View(employee);
+            if (_userManager.GetCookieAdmin())
+            {
+                var employee = _companyDB.Employee.Find(id);
+                return View(employee);
+            }
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteEmployee(decimal? id)
         {
-            if (id != null)
+            if (_userManager.GetCookieAdmin())
             {
-                Employee? employee = await _companyDB.Employee.FirstOrDefaultAsync(p => p.Id == id);
-                if (employee != null)
+                if (id != null)
                 {
-                    _companyDB.Employee.Remove(employee);
-                    await _companyDB.SaveChangesAsync();
-                    return RedirectToAction("ListEmployee");
+                    Employee? employee = await _companyDB.Employee.FirstOrDefaultAsync(p => p.Id == id);
+                    if (employee != null)
+                    {
+                        _companyDB.Employee.Remove(employee);
+                        await _companyDB.SaveChangesAsync();
+                        return RedirectToAction("ListEmployee");
+                    }
                 }
+                return NotFound();
             }
-            return NotFound();
+            ModelState.AddModelError("all", "Incorrect username or password!");
+            return RedirectToAction("Index", "User");
+
         }
 
 

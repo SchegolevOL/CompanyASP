@@ -1,12 +1,14 @@
 using CompanyASP.Middlewares;
 using CompanyASP.Models;
+using CompanyASP.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IUserManager, UserManager>();
 
 builder.Services.AddDbContextPool<UserDbContext>(options =>
 {    
@@ -21,7 +23,6 @@ builder.Services.AddDbContext<CompanyDB>(options =>
 
 var app = builder.Build();
 
-app.UseMiddleware<KeyMiddleware>();
 
 
 
@@ -45,17 +46,16 @@ app.UseAuthorization();
 //    name: "default",
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "User",
-        pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
+        pattern: "{area}/{controller=User}/{action=Index}/{id?}");
 
     endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
+        pattern: "{controller=User}/{action=Index}/{id?}");
 });
-
+app.UseMiddleware<KeyMiddleware>();
 app.Run();

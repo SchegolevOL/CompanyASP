@@ -5,7 +5,8 @@
 
 <h1>Login</h1>
 
-<form asp-controller="User" asp-action="Registry" method="post">
+<form asp-controller="User" asp-action="Login" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="mb-3">
         <label asp-for="Login" for="exampleInputEmail1" class="form-label">Email address</label>
         <input asp-for="Login" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
