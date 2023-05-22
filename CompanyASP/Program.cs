@@ -1,3 +1,4 @@
+using CompanyASP.Middlewares;
 using CompanyASP.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,11 @@ builder.Services.AddDbContext<CompanyDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 var app = builder.Build();
+
+app.UseMiddleware<KeyMiddleware>();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
