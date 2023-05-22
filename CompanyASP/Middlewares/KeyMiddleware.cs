@@ -12,7 +12,7 @@
         public async Task InvokeAsync(HttpContext context)
         {
             var key = context.Request.Query["key"];
-            if (key=="qwerty")
+            //if (key == "qwerty")
             {
                 await _next.Invoke(context);
             }
